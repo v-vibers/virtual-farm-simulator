@@ -1,36 +1,123 @@
-# untitled app
+# 🌱 Virtual Farm Simulator
 
-Make a virtual garden where users can buy by clicking a button to get money and grow a farm with different types of seeds and over time they grow. Use subscribe.dev as well.
+A fun, interactive virtual farming game where you can grow crops, earn money, and build your dream farm! Built with React 18, TypeScript, and integrated with Subscribe.dev for authentication and cloud storage.
+
+## Features
+
+- 💰 **Click to Earn**: Generate money by clicking the earn button
+- 🌾 **Plant Seeds**: Choose from 5 different types of seeds (Carrot, Tomato, Wheat, Corn, Sunflower)
+- ⏰ **Real-time Growth**: Watch your plants grow in real-time with progress bars
+- 🏆 **Harvest & Profit**: Harvest fully grown crops and earn money
+- ☁️ **Cloud Sync**: Your farm progress is automatically saved to the cloud via Subscribe.dev
+- 📊 **Stats Dashboard**: Track your balance, growing plants, credits, and subscription plan
 
 ## Getting Started
 
-This application was created using VGit AI-powered development tools.
+### Prerequisites
 
-### Development
+- Node.js 16+ and npm
+- A Subscribe.dev account and project token
 
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/v-vibers/virtual-farm-simulator.git
+cd virtual-farm-simulator
+```
+
+2. Install dependencies:
 ```bash
 npm install
+```
+
+3. Create a `.env` file in the root directory:
+```bash
+cp .env.example .env
+```
+
+4. Get your Subscribe.dev project token:
+   - Go to [subscribe.dev](https://subscribe.dev)
+   - Create a project or use an existing one
+   - Copy your project public key (starts with `pub_`)
+   - Add it to your `.env` file:
+```
+VITE_SUBSCRIBE_DEV_PROJECT_TOKEN=pub_your_token_here
+```
+
+5. Start the development server:
+```bash
 npm run dev
 ```
 
-### Building for Production
+6. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
+
+## How to Play
+
+1. **Sign In**: Click "Start Farming" to sign in with Subscribe.dev
+2. **Earn Money**: Click the "Click to Earn $5" button to generate money
+3. **Buy Seeds**: Use your money to purchase seeds from the shop
+4. **Watch Them Grow**: Seeds will grow in real-time. Watch the progress bar fill up!
+5. **Harvest**: When a plant is fully grown (100%), click "Harvest" to earn money
+6. **Repeat**: Use your earnings to buy more expensive seeds for bigger profits!
+
+## Seed Types
+
+| Seed | Cost | Growth Time | Sell Price | Profit |
+|------|------|-------------|------------|--------|
+| 🥕 Carrot | $10 | 30 seconds | $25 | $15 |
+| 🍅 Tomato | $20 | 45 seconds | $50 | $30 |
+| 🌾 Wheat | $15 | 60 seconds | $40 | $25 |
+| 🌽 Corn | $30 | 90 seconds | $80 | $50 |
+| 🌻 Sunflower | $50 | 120 seconds | $150 | $100 |
+
+## Tech Stack
+
+- **React 18**: UI framework
+- **TypeScript**: Type safety
+- **Vite**: Build tool and dev server
+- **Subscribe.dev**: Authentication, cloud storage, and usage tracking
+- **CSS3**: Modern styling with gradients and animations
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── SignInScreen.tsx    # Landing page and authentication
+│   └── VirtualFarm.tsx      # Main game component
+├── types.ts                 # TypeScript type definitions
+├── App.tsx                  # Root component with auth routing
+├── App.css                  # All styling
+├── main.tsx                 # Entry point with Subscribe.dev provider
+└── index.css                # Global styles
+```
+
+## Subscribe.dev Integration
+
+This project uses Subscribe.dev for:
+- **Authentication**: Secure sign-in/sign-out
+- **Cloud Storage**: Farm state persists across devices
+- **Usage Tracking**: Monitor API credits
+- **Subscription Management**: Support for paid plans
+
+The app follows Subscribe.dev's component separation pattern to properly handle React Hooks rules.
+
+## Building for Production
 
 ```bash
 npm run build
 ```
 
-### Deployment
+The built files will be in the `dist/` directory.
 
-This project includes automated deployment via VGit workflows. Push to any branch to trigger a preview deployment.
+## License
 
-## VGit Workflows
+MIT
 
-This repository includes the following VGit workflows:
+## Contributing
 
-- **Create Feature**: Implement new features using AI assistance
-- **Ask Codebase**: Get AI-powered answers about your code
-- **Merge Branch**: Safely merge branches with validation
-- **Deploy Preview**: Automated preview deployments
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
