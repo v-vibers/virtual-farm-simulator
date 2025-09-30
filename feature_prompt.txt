@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Make the menu responsive and add a shop where they can buy more types of crops or make the farm field bigger. The starting size if a 3x3.
+**Feature Request:** Make sure the farm follows the proper size of the current farm size. If the farm is 3x3 it should follow it exactly instead of in a list. Make a grid for the farm
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/make-the-menu-responsive-and-add-a-shop
-- Base Branch: feat/subscribedev-should-be-able-to-start-in
+- Branch: feat/make-sure-the-farm-follows-the-proper-si
+- Base Branch: feat/make-the-menu-responsive-and-add-a-shop
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**
