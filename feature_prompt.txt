@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Make sure the farm follows the proper size of the current farm size. If the farm is 3x3 it should follow it exactly instead of in a list. Make a grid for the farm
+**Feature Request:** Make the screen responsive for smaller screens. Everything should fit into the page without much scrolling.
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/make-sure-the-farm-follows-the-proper-si
-- Base Branch: feat/make-the-menu-responsive-and-add-a-shop
+- Branch: feat/make-the-screen-responsive-for-smaller-s
+- Base Branch: feat/make-sure-the-farm-follows-the-proper-si
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**
