@@ -8,8 +8,10 @@ A fun, interactive virtual farming game where you can grow crops, earn money, an
 - 🌾 **Plant Seeds**: Choose from 5 different types of seeds (Carrot, Tomato, Wheat, Corn, Sunflower)
 - ⏰ **Real-time Growth**: Watch your plants grow in real-time with progress bars
 - 🏆 **Harvest & Profit**: Harvest fully grown crops and earn money
-- ☁️ **Cloud Sync**: Your farm progress is automatically saved to the cloud via Subscribe.dev
+- ☁️ **Cloud Sync**: Your farm progress is automatically saved to the cloud via Subscribe.dev (when authenticated)
+- 🎮 **Demo Mode**: Play without authentication using local storage (perfect for development)
 - 📊 **Stats Dashboard**: Track your balance, growing plants, credits, and subscription plan
+- 🌙 **Dark Mode**: Beautiful dark theme support with smooth transitions
 
 ## Getting Started
 
@@ -31,12 +33,34 @@ cd virtual-farm-simulator
 npm install
 ```
 
-3. Create a `.env` file in the root directory:
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
+
+### Development Mode (Demo Mode)
+
+The app supports **development mode** which allows you to run and test the application without a Subscribe.dev account or project token:
+
+- **No authentication required**: Click "Continue in Demo Mode" to skip sign-in
+- **Local storage only**: Farm state is saved to browser localStorage
+- **Full functionality**: All game features work normally
+- **Perfect for development**: Test and develop without cloud dependencies
+
+To use demo mode, simply start the app without setting `VITE_SUBSCRIBE_DEV_PROJECT_TOKEN` in your environment.
+
+### Production Mode
+
+For production deployment with cloud sync and authentication:
+
+1. Create a `.env` file in the root directory:
 ```bash
 cp .env.example .env
 ```
 
-4. Get your Subscribe.dev project token:
+2. Get your Subscribe.dev project token:
    - Go to [subscribe.dev](https://subscribe.dev)
    - Create a project or use an existing one
    - Copy your project public key (starts with `pub_`)
@@ -45,21 +69,19 @@ cp .env.example .env
 VITE_SUBSCRIBE_DEV_PROJECT_TOKEN=pub_your_token_here
 ```
 
-5. Start the development server:
-```bash
-npm run dev
-```
-
-6. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
+3. Restart the development server
 
 ## How to Play
 
-1. **Sign In**: Click "Start Farming" to sign in with Subscribe.dev
+1. **Choose Mode**:
+   - Click "Sign In to Start Farming" for cloud-synced progress
+   - Click "Continue in Demo Mode" to play without authentication (localStorage only)
 2. **Earn Money**: Click the "Click to Earn $5" button to generate money
 3. **Buy Seeds**: Use your money to purchase seeds from the shop
 4. **Watch Them Grow**: Seeds will grow in real-time. Watch the progress bar fill up!
 5. **Harvest**: When a plant is fully grown (100%), click "Harvest" to earn money
 6. **Repeat**: Use your earnings to buy more expensive seeds for bigger profits!
+7. **Dark Mode**: Toggle between light and dark themes using the moon/sun button
 
 ## Seed Types
 

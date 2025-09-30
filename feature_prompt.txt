@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Add a dark mode
+**Feature Request:** Subscribe.dev should be able to start in development mode.
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/add-a-dark-mode
-- Base Branch: feat/initial-implementation
+- Branch: feat/subscribedev-should-be-able-to-start-in
+- Base Branch: feat/add-a-dark-mode
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**

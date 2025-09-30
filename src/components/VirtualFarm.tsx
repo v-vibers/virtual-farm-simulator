@@ -2,16 +2,52 @@ import { useState, useEffect } from 'react';
 import { useSubscribeDev } from '@subscribe.dev/react';
 import { FarmState, Seed, SeedType, SEED_CONFIGS } from '../types';
 
-export function VirtualFarm() {
-  const { useStorage, signOut, usage, subscriptionStatus, user } = useSubscribeDev();
+// Helper hook for localStorage fallback in demo mode
+function useLocalStorage<T>(key: string, defaultValue: T): [T, (value: T) => void, 'local'] {
+  const [value, setValue] = useState<T>(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  });
 
-  const [farmState, setFarmState, syncStatus] = useStorage!<FarmState>('farm-state', {
+  const setStoredValue = (newValue: T) => {
+    try {
+      setValue(newValue);
+      localStorage.setItem(key, JSON.stringify(newValue));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
+  };
+
+  return [value, setStoredValue, 'local'];
+}
+
+interface VirtualFarmProps {
+  onShowSignIn?: () => void;
+}
+
+export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
+  const { useStorage, signOut, usage, subscriptionStatus, user, isSignedIn } = useSubscribeDev();
+
+  // Use cloud storage when signed in, localStorage in demo mode
+  const useFarmStorage = isSignedIn && useStorage
+    ? useStorage
+    : useLocalStorage;
+
+  const useDarkModeStorage = isSignedIn && useStorage
+    ? useStorage
+    : useLocalStorage;
+
+  const [farmState, setFarmState, syncStatus] = useFarmStorage<FarmState>('farm-state', {
     money: 100,
     seeds: [],
     lastUpdated: Date.now()
   });
 
-  const [darkMode, setDarkMode] = useStorage!<boolean>('dark-mode', false);
+  const [darkMode, setDarkMode] = useDarkModeStorage<boolean>('dark-mode', false);
 
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [clickAnimation, setClickAnimation] = useState(false);
@@ -100,9 +136,15 @@ export function VirtualFarm() {
             <button onClick={toggleDarkMode} className="theme-toggle" title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
               {darkMode ? '☀️' : '🌙'}
             </button>
-            <button onClick={signOut} className="sign-out-button">
-              Sign Out
-            </button>
+            {isSignedIn ? (
+              <button onClick={signOut} className="sign-out-button">
+                Sign Out
+              </button>
+            ) : (
+              <button onClick={onShowSignIn} className="sign-in-button">
+                Sign In
+              </button>
+            )}
           </div>
         </div>
 
@@ -115,24 +157,37 @@ export function VirtualFarm() {
             <span className="stat-label">Growing</span>
             <span className="stat-value">🌱 {farmState.seeds.length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Credits</span>
-            <span className="stat-value">⚡ {usage?.remainingCredits ?? 0}</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Plan</span>
-            <span className="stat-value">📊 {subscriptionStatus?.plan?.name ?? 'Free'}</span>
-          </div>
+          {isSignedIn && (
+            <>
+              <div className="stat-card">
+                <span className="stat-label">Credits</span>
+                <span className="stat-value">⚡ {usage?.remainingCredits ?? 0}</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-label">Plan</span>
+                <span className="stat-value">📊 {subscriptionStatus?.plan?.name ?? 'Free'}</span>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="user-info">
-          <span className="user-email">{user?.email}</span>
-          <span className={`sync-status sync-${syncStatus}`}>
-            {syncStatus === 'synced' && '✓ Synced'}
-            {syncStatus === 'syncing' && '⟳ Syncing...'}
-            {syncStatus === 'local' && '○ Local'}
-            {syncStatus === 'error' && '✗ Error'}
-          </span>
+          {isSignedIn ? (
+            <>
+              <span className="user-email">{user?.email}</span>
+              <span className={`sync-status sync-${syncStatus}`}>
+                {syncStatus === 'synced' && '✓ Synced'}
+                {syncStatus === 'syncing' && '⟳ Syncing...'}
+                {syncStatus === 'local' && '○ Local'}
+                {syncStatus === 'error' && '✗ Error'}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="demo-badge">Demo Mode</span>
+              <span className="sync-status sync-local">○ Local Storage</span>
+            </>
+          )}
         </div>
       </header>
 
