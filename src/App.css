@@ -136,6 +136,24 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.shop-button {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.shop-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
 }
 
 .theme-toggle {
@@ -441,6 +459,195 @@
   box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
 }
 
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg-primary);
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 2rem;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+.shop-tabs {
+  display: flex;
+  padding: 0 2rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.shop-tab {
+  padding: 1rem 2rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.shop-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: #f5576c;
+}
+
+.shop-section-modal {
+  padding: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shop-section-modal:last-child {
+  border-bottom: none;
+}
+
+.shop-section-modal h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.shop-hint {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  border-left: 4px solid #f5576c;
+}
+
+.expansion-area {
+  display: flex;
+  gap: 1rem;
+}
+
+.expansion-card {
+  flex: 1;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+:root.dark .expansion-card {
+  background: linear-gradient(135deg, #2d5a5a 0%, #5a3d4a 100%);
+}
+
+.expansion-icon {
+  font-size: 3rem;
+}
+
+.expansion-info {
+  flex: 1;
+}
+
+.expansion-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+}
+
+.expansion-info p {
+  margin: 0.3rem 0;
+  color: var(--text-secondary);
+}
+
+.expansion-benefit {
+  color: #48bb78;
+  font-weight: 700;
+}
+
+.expansion-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.expansion-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.expansion-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.expansion-cost {
+  font-size: 1.2rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .virtual-farm {
@@ -449,7 +656,22 @@
 
   .farm-title {
     flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
+  }
+
+  .farm-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .shop-button, .theme-toggle, .sign-out-button, .header-buttons .sign-in-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 
   .farm-stats {
@@ -457,10 +679,99 @@
   }
 
   .seed-shop {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 
   .farm-grid {
     grid-template-columns: 1fr;
+  }
+
+  .earn-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .shop-section-modal {
+    padding: 1.5rem;
+  }
+
+  .expansion-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .expansion-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .farm-title h1 {
+    font-size: 1.3rem;
+  }
+
+  .header-buttons {
+    gap: 0.3rem;
+  }
+
+  .shop-button, .theme-toggle {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .stat-card {
+    padding: 0.8rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+  }
+
+  .seed-shop {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .seed-card {
+    padding: 1rem;
+  }
+
+  .seed-emoji {
+    font-size: 2.5rem;
+  }
+
+  .earn-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .shop-tabs {
+    padding: 0 1rem;
+  }
+
+  .shop-tab {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
   }
 }
