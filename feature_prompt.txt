@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Make the screen responsive for smaller screens. Everything should fit into the page without much scrolling.
+**Feature Request:** Generate a responsive UI for a web app that fills the entire browser window without requiring scrolling. Make all elements scale proportionally so they fit on one screen, regardless of screen size. Use CSS to ensure the layout stretches to the full height and width of the page, and elements adjust dynamically. Avoid fixed heights that could cause overflow.
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/make-the-screen-responsive-for-smaller-s
-- Base Branch: feat/make-sure-the-farm-follows-the-proper-si
+- Branch: feat/generate-a-responsive-ui-for-a-web-app-t
+- Base Branch: feat/make-the-screen-responsive-for-smaller-s
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**
