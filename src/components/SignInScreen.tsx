@@ -1,8 +1,9 @@
 interface SignInScreenProps {
   signIn: () => void;
+  onSkip?: () => void;
 }
 
-export function SignInScreen({ signIn }: SignInScreenProps) {
+export function SignInScreen({ signIn, onSkip }: SignInScreenProps) {
   return (
     <div className="sign-in-screen">
       <div className="sign-in-container">
@@ -24,9 +25,16 @@ export function SignInScreen({ signIn }: SignInScreenProps) {
           </div>
         </div>
 
-        <button onClick={signIn} className="sign-in-button">
-          Start Farming
-        </button>
+        <div className="button-group">
+          <button onClick={signIn} className="sign-in-button">
+            Sign In to Start Farming
+          </button>
+          {onSkip && (
+            <button onClick={onSkip} className="skip-button">
+              Continue in Demo Mode
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
