@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSubscribeDev } from '@subscribe.dev/react';
-import { FarmState, Seed, SeedType, SEED_CONFIGS } from '../types';
+import { FarmState, Seed, SeedType, SEED_CONFIGS, RARITY_INFO } from '../types';
 
 // Helper hook for localStorage fallback in demo mode
 function useLocalStorage<T>(key: string, defaultValue: T): [T, (value: T) => void, 'local'] {
@@ -270,6 +270,7 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
               <div className="seed-shop">
                 {(Object.keys(SEED_CONFIGS) as SeedType[]).map((seedType) => {
                   const config = SEED_CONFIGS[seedType];
+                  const rarityInfo = RARITY_INFO[config.rarity];
                   const canAfford = farmState.money >= config.cost;
                   const farmFull = farmState.seeds.length >= maxPlots;
 
@@ -283,7 +284,7 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
                         }
                       }}
                       disabled={!canAfford || farmFull}
-                      className="seed-card"
+                      className={`seed-card rarity-${config.rarity}`}
                       title={
                         farmFull
                           ? 'Farm is full'
@@ -292,11 +293,17 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
                           : 'Click to plant'
                       }
                     >
+                      <span className="rarity-badge" style={{ backgroundColor: rarityInfo.color }}>
+                        {rarityInfo.label}
+                      </span>
                       <span className="seed-emoji">{config.emoji}</span>
                       <span className="seed-name">{config.name}</span>
                       <span className="seed-cost">💰 ${config.cost}</span>
                       <span className="seed-info">
-                        ⏱️ {config.growthDuration / 1000}s → 💰 ${config.sellPrice}
+                        ⏱️ {Math.floor(config.growthDuration / 1000)}s → 💰 ${config.sellPrice}
+                      </span>
+                      <span className="seed-profit">
+                        📈 Profit: ${config.sellPrice - config.cost}
                       </span>
                     </button>
                   );
@@ -365,14 +372,22 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
 
             // Planted seed
             const config = SEED_CONFIGS[seed.type];
+            const rarityInfo = RARITY_INFO[config.rarity];
             const progress = getGrowthProgress(seed);
             const grown = isGrown(seed);
 
             return (
-              <div key={seed.id} className={`plant-card ${grown ? 'grown' : 'growing'}`}>
+              <div
+                key={seed.id}
+                className={`plant-card ${grown ? 'grown' : 'growing'} rarity-${config.rarity}`}
+                style={{ borderColor: grown ? rarityInfo.color : undefined }}
+              >
                 <div className="plant-emoji">{grown ? config.emoji : '🌱'}</div>
                 <div className="plant-info">
                   <span className="plant-name">{config.name}</span>
+                  <span className="plant-rarity-small" style={{ color: rarityInfo.color }}>
+                    {rarityInfo.label}
+                  </span>
                   {grown ? (
                     <button onClick={() => harvestSeed(seed.id)} className="harvest-button">
                       Harvest 💰 ${config.sellPrice}
@@ -382,7 +397,10 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
                       <div className="progress-bar">
                         <div
                           className="progress-fill"
-                          style={{ width: `${progress}%` }}
+                          style={{
+                            width: `${progress}%`,
+                            background: `linear-gradient(90deg, ${rarityInfo.color} 0%, ${rarityInfo.color}dd 100%)`
+                          }}
                         />
                       </div>
                       <span className="progress-text">{Math.floor(progress)}%</span>

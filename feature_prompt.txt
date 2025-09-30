@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Generate a responsive UI for a web app that fills the entire browser window without requiring scrolling. Make all elements scale proportionally so they fit on one screen, regardless of screen size. Use CSS to ensure the layout stretches to the full height and width of the page, and elements adjust dynamically. Avoid fixed heights that could cause overflow.
+**Feature Request:** Make the prices of the fruits higher. Fruits should have rarity tiers and they give more money but the time to farm them is more.
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/generate-a-responsive-ui-for-a-web-app-t
-- Base Branch: feat/make-the-screen-responsive-for-smaller-s
+- Branch: feat/make-the-prices-of-the-fruits-higher-fru
+- Base Branch: feat/generate-a-responsive-ui-for-a-web-app-t
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**
