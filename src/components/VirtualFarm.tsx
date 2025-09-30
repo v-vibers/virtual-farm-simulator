@@ -11,8 +11,23 @@ export function VirtualFarm() {
     lastUpdated: Date.now()
   });
 
+  const [darkMode, setDarkMode] = useStorage!<boolean>('dark-mode', false);
+
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [clickAnimation, setClickAnimation] = useState(false);
+
+  // Apply dark mode class to document root
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   // Update current time every 100ms for smooth growth progress
   useEffect(() => {
@@ -81,9 +96,14 @@ export function VirtualFarm() {
       <header className="farm-header">
         <div className="farm-title">
           <h1>🌱 Virtual Farm</h1>
-          <button onClick={signOut} className="sign-out-button">
-            Sign Out
-          </button>
+          <div className="header-buttons">
+            <button onClick={toggleDarkMode} className="theme-toggle" title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+            <button onClick={signOut} className="sign-out-button">
+              Sign Out
+            </button>
+          </div>
         </div>
 
         <div className="farm-stats">

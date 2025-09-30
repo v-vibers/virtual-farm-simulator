@@ -1,12 +1,12 @@
 Please implement the following feature request:
 
-**Feature Request:** Initial app implementation: Make a virtual garden where users can buy by clicking a button to get money and grow a farm with different types of seeds and over time they grow. Use subscribe.dev as well.
+**Feature Request:** Add a dark mode
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/initial-implementation
-- Base Branch: main
-- Requested by: v-vibers
+- Branch: feat/add-a-dark-mode
+- Base Branch: feat/initial-implementation
+- Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**
 1. Check if there is a CLAUDE.md file in the repository root
