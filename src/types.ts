@@ -1,4 +1,4 @@
-export type SeedType = 'carrot' | 'tomato' | 'wheat' | 'corn' | 'sunflower';
+export type SeedType = 'carrot' | 'tomato' | 'wheat' | 'corn' | 'sunflower' | 'pumpkin' | 'strawberry' | 'potato' | 'eggplant';
 
 export interface Seed {
   id: string;
@@ -19,6 +19,7 @@ export interface FarmState {
   money: number;
   seeds: Seed[];
   lastUpdated: number;
+  farmSize: number;
 }
 
 export const SEED_CONFIGS: Record<SeedType, SeedConfig> = {
@@ -56,5 +57,33 @@ export const SEED_CONFIGS: Record<SeedType, SeedConfig> = {
     growthDuration: 120000, // 120 seconds
     sellPrice: 150,
     emoji: '🌻'
+  },
+  pumpkin: {
+    name: 'Pumpkin',
+    cost: 40,
+    growthDuration: 100000, // 100 seconds
+    sellPrice: 100,
+    emoji: '🎃'
+  },
+  strawberry: {
+    name: 'Strawberry',
+    cost: 25,
+    growthDuration: 50000, // 50 seconds
+    sellPrice: 60,
+    emoji: '🍓'
+  },
+  potato: {
+    name: 'Potato',
+    cost: 12,
+    growthDuration: 40000, // 40 seconds
+    sellPrice: 30,
+    emoji: '🥔'
+  },
+  eggplant: {
+    name: 'Eggplant',
+    cost: 35,
+    growthDuration: 75000, // 75 seconds
+    sellPrice: 90,
+    emoji: '🍆'
   }
 };

@@ -1,11 +1,11 @@
 Please implement the following feature request:
 
-**Feature Request:** Subscribe.dev should be able to start in development mode.
+**Feature Request:** Make the menu responsive and add a shop where they can buy more types of crops or make the farm field bigger. The starting size if a 3x3.
 
 **Project Context:**
 - Repository: v-vibers/virtual-farm-simulator
-- Branch: feat/subscribedev-should-be-able-to-start-in
-- Base Branch: feat/add-a-dark-mode
+- Branch: feat/make-the-menu-responsive-and-add-a-shop
+- Base Branch: feat/subscribedev-should-be-able-to-start-in
 - Requested by: paruiz01
 
 **CRITICAL - Read Project Instructions First:**

@@ -44,13 +44,25 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
   const [farmState, setFarmState, syncStatus] = useFarmStorage<FarmState>('farm-state', {
     money: 100,
     seeds: [],
-    lastUpdated: Date.now()
+    lastUpdated: Date.now(),
+    farmSize: 3
   });
 
   const [darkMode, setDarkMode] = useDarkModeStorage<boolean>('dark-mode', false);
 
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [clickAnimation, setClickAnimation] = useState(false);
+  const [showShopModal, setShowShopModal] = useState(false);
+
+  // Ensure farmSize exists for older saves
+  useEffect(() => {
+    if (farmState.farmSize === undefined) {
+      setFarmState({
+        ...farmState,
+        farmSize: 3
+      });
+    }
+  }, []);
 
   // Apply dark mode class to document root
   useEffect(() => {
@@ -85,7 +97,10 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
 
   const plantSeed = (seedType: SeedType) => {
     const config = SEED_CONFIGS[seedType];
+    const maxPlots = (farmState.farmSize || 3) * (farmState.farmSize || 3);
+
     if (farmState.money < config.cost) return;
+    if (farmState.seeds.length >= maxPlots) return;
 
     const newSeed: Seed = {
       id: `${Date.now()}-${Math.random()}`,
@@ -98,6 +113,21 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
       ...farmState,
       money: farmState.money - config.cost,
       seeds: [...farmState.seeds, newSeed],
+      lastUpdated: Date.now()
+    });
+  };
+
+  const expandFarm = () => {
+    const currentSize = farmState.farmSize || 3;
+    const expansionCost = currentSize * 100;
+
+    if (farmState.money < expansionCost) return;
+    if (currentSize >= 10) return; // Max size limit
+
+    setFarmState({
+      ...farmState,
+      money: farmState.money - expansionCost,
+      farmSize: currentSize + 1,
       lastUpdated: Date.now()
     });
   };
@@ -127,12 +157,23 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
     return getGrowthProgress(seed) >= 100;
   };
 
+  const maxPlots = (farmState.farmSize || 3) * (farmState.farmSize || 3);
+  const currentSize = farmState.farmSize || 3;
+  const expansionCost = currentSize * 100;
+
   return (
     <div className="virtual-farm">
       <header className="farm-header">
         <div className="farm-title">
           <h1>🌱 Virtual Farm</h1>
           <div className="header-buttons">
+            <button
+              onClick={() => setShowShopModal(true)}
+              className="shop-button"
+              title="Open Shop"
+            >
+              🏪 Shop
+            </button>
             <button onClick={toggleDarkMode} className="theme-toggle" title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
               {darkMode ? '☀️' : '🌙'}
             </button>
@@ -154,8 +195,12 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
             <span className="stat-value">💰 ${farmState.money}</span>
           </div>
           <div className="stat-card">
-            <span className="stat-label">Growing</span>
-            <span className="stat-value">🌱 {farmState.seeds.length}</span>
+            <span className="stat-label">Farm Plots</span>
+            <span className="stat-value">📏 {farmState.seeds.length}/{maxPlots}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Farm Size</span>
+            <span className="stat-value">🏡 {currentSize}x{currentSize}</span>
           </div>
           {isSignedIn && (
             <>
@@ -201,31 +246,101 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
         </button>
       </div>
 
-      <div className="shop-section">
-        <h2>🏪 Seed Shop</h2>
-        <div className="seed-shop">
-          {(Object.keys(SEED_CONFIGS) as SeedType[]).map((seedType) => {
-            const config = SEED_CONFIGS[seedType];
-            const canAfford = farmState.money >= config.cost;
-
-            return (
-              <button
-                key={seedType}
-                onClick={() => plantSeed(seedType)}
-                disabled={!canAfford}
-                className="seed-card"
-              >
-                <span className="seed-emoji">{config.emoji}</span>
-                <span className="seed-name">{config.name}</span>
-                <span className="seed-cost">💰 ${config.cost}</span>
-                <span className="seed-info">
-                  ⏱️ {config.growthDuration / 1000}s → 💰 ${config.sellPrice}
-                </span>
+      {showShopModal && (
+        <div className="modal-overlay" onClick={() => setShowShopModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>🏪 Farm Shop</h2>
+              <button onClick={() => setShowShopModal(false)} className="close-button">
+                ✕
               </button>
-            );
-          })}
+            </div>
+
+            <div className="shop-tabs">
+              <div className="shop-tab active">Seeds</div>
+            </div>
+
+            <div className="shop-section-modal">
+              <h3>🌱 Seeds</h3>
+              <p className="shop-hint">
+                {farmState.seeds.length >= maxPlots
+                  ? '⚠️ Farm is full! Expand your farm to plant more seeds.'
+                  : `Available plots: ${maxPlots - farmState.seeds.length}/${maxPlots}`}
+              </p>
+              <div className="seed-shop">
+                {(Object.keys(SEED_CONFIGS) as SeedType[]).map((seedType) => {
+                  const config = SEED_CONFIGS[seedType];
+                  const canAfford = farmState.money >= config.cost;
+                  const farmFull = farmState.seeds.length >= maxPlots;
+
+                  return (
+                    <button
+                      key={seedType}
+                      onClick={() => {
+                        plantSeed(seedType);
+                        if (farmState.seeds.length + 1 >= maxPlots) {
+                          // Don't close modal if farm will be full
+                        }
+                      }}
+                      disabled={!canAfford || farmFull}
+                      className="seed-card"
+                      title={
+                        farmFull
+                          ? 'Farm is full'
+                          : !canAfford
+                          ? 'Not enough money'
+                          : 'Click to plant'
+                      }
+                    >
+                      <span className="seed-emoji">{config.emoji}</span>
+                      <span className="seed-name">{config.name}</span>
+                      <span className="seed-cost">💰 ${config.cost}</span>
+                      <span className="seed-info">
+                        ⏱️ {config.growthDuration / 1000}s → 💰 ${config.sellPrice}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="shop-section-modal">
+              <h3>🏡 Farm Expansion</h3>
+              <p className="shop-hint">
+                Current size: {currentSize}x{currentSize} ({maxPlots} plots)
+                {currentSize >= 10 ? ' - Maximum size reached!' : ''}
+              </p>
+              <div className="expansion-area">
+                <div className="expansion-card">
+                  <span className="expansion-icon">📐</span>
+                  <div className="expansion-info">
+                    <h4>Expand Farm</h4>
+                    <p>Increase farm size to {currentSize + 1}x{currentSize + 1}</p>
+                    <p className="expansion-benefit">
+                      +{(currentSize + 1) * (currentSize + 1) - maxPlots} new plots
+                    </p>
+                  </div>
+                  <button
+                    onClick={expandFarm}
+                    disabled={farmState.money < expansionCost || currentSize >= 10}
+                    className="expansion-button"
+                    title={
+                      currentSize >= 10
+                        ? 'Maximum size reached'
+                        : farmState.money < expansionCost
+                        ? `Need $${expansionCost - farmState.money} more`
+                        : 'Click to expand'
+                    }
+                  >
+                    <span className="expansion-cost">💰 ${expansionCost}</span>
+                    <span>Buy Expansion</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="farm-section">
         <h2>🌾 Your Farm</h2>
