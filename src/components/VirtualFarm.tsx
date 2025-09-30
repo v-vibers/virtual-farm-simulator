@@ -344,43 +344,55 @@ export function VirtualFarm({ onShowSignIn }: VirtualFarmProps) {
 
       <div className="farm-section">
         <h2>🌾 Your Farm</h2>
-        {farmState.seeds.length === 0 ? (
-          <div className="empty-farm">
-            <p>Your farm is empty. Plant some seeds to get started!</p>
-          </div>
-        ) : (
-          <div className="farm-grid">
-            {farmState.seeds.map((seed) => {
-              const config = SEED_CONFIGS[seed.type];
-              const progress = getGrowthProgress(seed);
-              const grown = isGrown(seed);
+        <div className="farm-grid" style={{ gridTemplateColumns: `repeat(${currentSize}, 1fr)` }}>
+          {Array.from({ length: maxPlots }).map((_, index) => {
+            const seed = farmState.seeds[index];
 
+            if (!seed) {
+              // Empty slot
               return (
-                <div key={seed.id} className={`plant-card ${grown ? 'grown' : 'growing'}`}>
-                  <div className="plant-emoji">{grown ? config.emoji : '🌱'}</div>
-                  <div className="plant-info">
-                    <span className="plant-name">{config.name}</span>
-                    {grown ? (
-                      <button onClick={() => harvestSeed(seed.id)} className="harvest-button">
-                        Harvest 💰 ${config.sellPrice}
-                      </button>
-                    ) : (
-                      <>
-                        <div className="progress-bar">
-                          <div
-                            className="progress-fill"
-                            style={{ width: `${progress}%` }}
-                          />
-                        </div>
-                        <span className="progress-text">{Math.floor(progress)}%</span>
-                      </>
-                    )}
-                  </div>
+                <div
+                  key={`empty-${index}`}
+                  className="plant-card empty-slot"
+                  onClick={() => setShowShopModal(true)}
+                  title="Click to open shop and plant seeds"
+                >
+                  <div className="empty-slot-icon">🌱</div>
+                  <div className="empty-slot-text">Empty Plot<br/>Click to Plant</div>
                 </div>
               );
-            })}
-          </div>
-        )}
+            }
+
+            // Planted seed
+            const config = SEED_CONFIGS[seed.type];
+            const progress = getGrowthProgress(seed);
+            const grown = isGrown(seed);
+
+            return (
+              <div key={seed.id} className={`plant-card ${grown ? 'grown' : 'growing'}`}>
+                <div className="plant-emoji">{grown ? config.emoji : '🌱'}</div>
+                <div className="plant-info">
+                  <span className="plant-name">{config.name}</span>
+                  {grown ? (
+                    <button onClick={() => harvestSeed(seed.id)} className="harvest-button">
+                      Harvest 💰 ${config.sellPrice}
+                    </button>
+                  ) : (
+                    <>
+                      <div className="progress-bar">
+                        <div
+                          className="progress-fill"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                      <span className="progress-text">{Math.floor(progress)}%</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

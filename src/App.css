@@ -373,19 +373,40 @@
 
 .farm-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
+  justify-content: center;
+  max-width: fit-content;
+  margin: 0 auto;
 }
 
 .plant-card {
   background: var(--bg-primary);
   border: 3px solid var(--border-color);
   border-radius: 15px;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.5rem;
   transition: all 0.2s;
+  min-height: 180px;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.plant-card.empty-slot {
+  background: var(--bg-secondary);
+  border-style: dashed;
+  border-color: var(--border-color);
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.plant-card.empty-slot:hover {
+  opacity: 1;
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
 }
 
 .plant-card.grown {
@@ -412,14 +433,16 @@
 }
 
 .plant-info {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  text-align: center;
 }
 
 .plant-name {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -447,16 +470,29 @@
   background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
+  padding: 0.6rem 1rem;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s;
+  font-size: 0.9rem;
+  width: 100%;
 }
 
 .harvest-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+}
+
+.empty-slot-icon {
+  font-size: 2.5rem;
+  opacity: 0.5;
+}
+
+.empty-slot-text {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  text-align: center;
 }
 
 /* Modal Styles */
@@ -682,8 +718,12 @@
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 
-  .farm-grid {
-    grid-template-columns: 1fr;
+  .plant-card {
+    min-height: 150px;
+  }
+
+  .plant-emoji {
+    font-size: 2.5rem;
   }
 
   .earn-button {
